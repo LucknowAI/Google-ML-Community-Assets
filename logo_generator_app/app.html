@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Customizable Website</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+        }
+        #capture {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 50vh;
+            width: 100%;
+        }
+        #logo {
+            font-size: 120px;
+            font-weight: bold;
+            line-height: 1;
+        }
+        #customText {
+            font-size: 60px;
+            margin-top: 10px;
+        }
+        #controls {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input, select, button {
+            margin: 5px;
+            padding: 5px;
+            width: 200px;
+        }
+        #colorPicker {
+            width: 200px;
+            height: 30px;
+        }
+        #downloadBtn {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div id="capture">
+        <div id="logo">ML</div>
+        <div id="customText">Hajipur</div>
+    </div>
+    <div id="controls">
+        <input type="color" id="colorPicker" value="#000000">
+        <input type="text" id="textInput" placeholder="Enter custom text">
+        <input type="range" id="sizeInput" min="20" max="120" value="60">
+        <select id="fontSelect">
+            <option value="Arial" selected>Arial (Default)</option>
+            <option value="Helvetica">Helvetica</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Courier">Courier</option>
+            <option value="Verdana">Verdana</option>
+        </select>
+        <button id="downloadBtn">Download as PNG</button>
+    </div>
+
+    <script>
+        const logo = document.getElementById('logo');
+        const customText = document.getElementById('customText');
+        const textInput = document.getElementById('textInput');
+        const sizeInput = document.getElementById('sizeInput');
+        const fontSelect = document.getElementById('fontSelect');
+        const colorPicker = document.getElementById('colorPicker');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        textInput.addEventListener('input', () => {
+            customText.textContent = textInput.value || 'Hajipur';
+        });
+
+        sizeInput.addEventListener('input', () => {
+            customText.style.fontSize = `${sizeInput.value}px`;
+        });
+
+        fontSelect.addEventListener('change', () => {
+            customText.style.fontFamily = fontSelect.value;
+        });
+
+        colorPicker.addEventListener('input', () => {
+            logo.style.color = colorPicker.value;
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            html2canvas(document.getElementById('capture'), {
+                backgroundColor: null,
+                scale: 2 // Increase resolution
+            }).then(canvas => {
+                canvas.toBlob((blob) => {
+                    const link = document.createElement('a');
+                    link.download = 'ml-custom-design.png';
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }, 'image/png');
+            });
+        });
+    </script>
+</body>
+</html>
